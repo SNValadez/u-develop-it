@@ -20,8 +20,32 @@ const db = mysql.createConnection(
 );
 
 
-db.query(`SELECT * FROM candidates`, (err, rows) => {
-    console.log(rows);
+app.get("/api/candidates", (req, res) =>{
+    const sql = `SELECT * FROM candidates`;
+
+    db.query(sql, (err, rows) => {
+if (err) {
+    res.status(500).json({ error: err.message });
+    return;
+    }
+    res.json({
+        message: "success",
+        data: rows
+        });
+    });
+});
+// db.query(`SELECT * FROM candidates WHERE id=1`, (err, row) => {
+//     if (err) {
+//         console.log(err);
+//     }
+//     console.log(row);
+// });
+
+db.query(`DELETE FROM candidates WHERE id = ?`, 1, (err, result) => {
+    if (err) {
+        console.log(err);
+    }
+    console.log(result);
 });
 
 // Default response for any other request (Not Found)
