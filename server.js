@@ -1,4 +1,4 @@
-const mysql = require("mysql2");
+
 const inputCheck = require('./utils/inputCheck');
 const express = require("express");
 const PORT = process.env.PORT || 3001;
@@ -8,16 +8,7 @@ const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-// Connect to database
-const db = mysql.createConnection(
-    {
-        host: "localhost",
-        user: "root",
-        password: "sn33k31000CD!",
-        database: "election"
-    },
-    console.log("Connected to the election database.")
-);
+
 
 
 app.get("/api/candidates", (req, res) =>{
