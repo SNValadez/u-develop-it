@@ -8,12 +8,12 @@ const db = require("./db/connection");
 const apiRoutes = require("./routes/apiRoutes");
 const inputCheck = require('./utils/inputCheck');
 
-app.use("/api", apiRoutes);
+
 
 // Express middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-
+app.use("/api", apiRoutes);
 
 
 
