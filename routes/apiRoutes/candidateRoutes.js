@@ -1,5 +1,5 @@
-const express = require("express");
-const router = express.router();
+//const express = require("express");
+const router = require("express").Router();
 const db = require("../../db/connection");
 const inputCheck = require("../../utils/inputCheck");
 
@@ -45,6 +45,30 @@ router.get("/candidate/:id", (req, res) => {
         });
     });
 });
+
+router.post('/candidate', ({ body }, res) => {
+    const errors = inputCheck(req.body, 'party_id');
+
+    if (errors) {
+    res.status(400).json({ error: errors });
+    return;
+    }
+
+    const sql = `INSERT INTO candidates (first_name, last_name, industry_connected)
+    VALUES (?,?,?)`;
+    const params = [body.first_name, body.last_name, body.industry_connected];
+
+    db.query(sql, params, (err, result) => {
+    if (err) {
+        res.status(400).json({ error: err.message });
+        return;
+    }
+    res.json({
+        message: 'success',
+        data: body
+    });
+});
+  });
 
 // Update a candidate's party
 router.put('/candidate/:id', (req, res) => {
@@ -92,26 +116,6 @@ router.delete('/api/candidate/:id', (req, res) => {
   });
 
   // Create a candidate
-router.post('/candidate', ({ body }, res) => {
-    const errors = inputCheck(req.body, 'party_id');
 
-    if (errors) {
-    res.status(400).json({ error: errors });
-    return;
-    }
 
-    const sql = `INSERT INTO candidates (first_name, last_name, industry_connected)
-    VALUES (?,?,?)`;
-    const params = [body.first_name, body.last_name, body.industry_connected];
-
-    db.query(sql, params, (err, result) => {
-    if (err) {
-        res.status(400).json({ error: err.message });
-        return;
-    }
-    res.json({
-        message: 'success',
-        data: body
-    });
-});
-  });
+  module.exports = router;
